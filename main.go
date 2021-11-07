@@ -9,6 +9,8 @@ import (
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 
+// https://www.calhoun.io/querying-for-a-single-record-using-gos-database-sql-package/
+
 func getPool() *pgxpool.Pool {
 	dbpool, err := pgxpool.Connect(context.Background(), os.Getenv("DATABASE_URL"))
 	if err != nil {
@@ -49,11 +51,8 @@ func main() {
 	dbpool := getPool()
 	defer dbpool.Close()
 
-	greeting := xString(dbpool, "select 'Hello, world!'")
-	fmt.Println(greeting)
-
-	count := xInt(dbpool, "select count(*) from smmtouch.users")
-	fmt.Println("there are", count, "users in smmtouch")
-
-	fmt.Println(db.Hello())
+	for i := 1001; i < 1020; i++ {
+		user := db.FindById(dbpool, i)
+		fmt.Println(user)
+	}
 }
