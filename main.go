@@ -40,19 +40,15 @@ func xInt(dbpool *pgxpool.Pool, sql string) int {
 	return res
 }
 
-func check(err error) {
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
-		os.Exit(1)
-	}
-}
-
 func main() {
 	dbpool := getPool()
 	defer dbpool.Close()
 
-	for i := 1001; i < 1020; i++ {
-		user := db.FindById(dbpool, i)
+	for i := 1001; i < 1010; i++ {
+		user := db.FindUserById(dbpool, i)
 		fmt.Println(user)
 	}
+
+	count := db.Count(dbpool)
+	fmt.Println("count=", count)
 }
